@@ -3,6 +3,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 import json
+from flask_cors import CORS, cross_origin
 from flask import make_response
 
 df = pd.read_csv("data.csv")
@@ -16,10 +17,11 @@ def negRev(mname):
     return(float(df[df.Movie==mname].Negative_Review))
 
 app = Flask(__name__)
+cors = CORS(app)
 @app.route('/movie', methods=['POST'])
 def getReviewDetails():
     try:
-        movie_name = request.json['mname']
+        movie_name = request.json['value']
         print(movie_name)
     except:
         return make_response(jsonify({'error' :'bad request'}),400)
